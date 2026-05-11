@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bagian 3 – Komunikasi Interpersonal Bahasa Jepang (A2/N4)</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
+
+  :root {
+    --ink: #1a1410;
+    --paper: #fdf6ec;
+    --cream: #f5e9d6;
+    --red: #c0392b;
+    --red-soft: #f9ebe9;
+    --gold: #b8860b;
+    --gold-light: #f5f0e0;
+    --border: #d4b896;
+    --correct: #1a6b3a;
+    --correct-bg: #eaf5ee;
+    --wrong: #c0392b;
+    --wrong-bg: #fdecea;
+    --shadow: rgba(90,50,10,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Libre Baskerville', 'Noto Serif JP', serif;
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 40px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '日';
+    position: absolute;
+    right: -20px; top: -40px;
+    font-size: 220px;
+    font-family: 'Noto Serif JP', serif;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .header-label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+  }
+  header p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: rgba(253,246,236,0.65);
+    font-style: italic;
+  }
+
+  /* ── IDENTITY FIELDS ── */
+  .identity {
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    padding: 20px 40px;
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .identity-field {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: #6b5033;
+  }
+  .identity-field label { font-weight: 500; white-space: nowrap; }
+  .identity-field input {
+    border: none;
+    border-bottom: 1.5px solid var(--border);
+    background: transparent;
+    padding: 4px 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    width: 180px;
+    outline: none;
+  }
+  .identity-field input:focus { border-bottom-color: var(--gold); }
+
+  /* ── INSTRUCTIONS ── */
+  .instructions {
+    margin: 28px 40px 0;
+    background: var(--gold-light);
+    border-left: 4px solid var(--gold);
+    padding: 16px 20px;
+    border-radius: 0 6px 6px 0;
+  }
+  .instructions h2 {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+  .instructions p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #5a3e1b;
+  }
+
+  /* ── SECTION DIVIDER ── */
+  .section-title {
+    margin: 36px 40px 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── QUIZ GRID ── */
+  .quiz {
+    padding: 16px 40px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 20px;
+  }
+
+  /* ── QUESTION CARD ── */
+  .question-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .question-card:hover { box-shadow: 0 4px 18px var(--shadow); }
+  .question-card.answered-correct { border-color: var(--correct); }
+  .question-card.answered-wrong   { border-color: var(--wrong); }
+
+  .card-header {
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .q-number {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .dialog {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    flex: 1;
+  }
+  .speaker { color: #8b6340; font-size: 11px; font-weight: 500; }
+
+  /* ── RUBY / FURIGANA ── */
+  ruby {
+    ruby-align: center;
+  }
+  rt {
+    font-size: 0.55em;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #8b6340;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── OPTIONS ── */
+  .options {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .option-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1.5px solid transparent;
+    background: var(--paper);
+    transition: background 0.15s, border-color 0.15s;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .option-label:hover { background: var(--gold-light); border-color: var(--border); }
+  .option-label input[type="radio"] { display: none; }
+  .option-badge {
+    background: var(--border);
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+
+  /* selected states */
+  .option-label.selected {
+    background: var(--gold-light);
+    border-color: var(--gold);
+  }
+  .option-label.selected .option-badge {
+    background: var(--gold);
+    color: #fff;
+  }
+  .option-label.correct {
+    background: var(--correct-bg);
+    border-color: var(--correct);
+  }
+  .option-label.correct .option-badge {
+    background: var(--correct);
+    color: #fff;
+  }
+  .option-label.wrong {
+    background: var(--wrong-bg);
+    border-color: var(--wrong);
+  }
+  .option-label.wrong .option-badge {
+    background: var(--wrong);
+    color: #fff;
+  }
+
+  /* feedback */
+  .feedback {
+    display: none;
+    padding: 8px 16px 12px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .feedback.show { display: block; }
+  .feedback.correct { color: var(--correct); background: var(--correct-bg); }
+  .feedback.wrong   { color: var(--wrong);   background: var(--wrong-bg); }
+
+  /* ── SUBMIT BAR ── */
+  .submit-bar {
+    position: sticky;
+    bottom: 0;
+    background: var(--ink);
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    z-index: 10;
+  }
+  .submit-bar .progress-text {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    color: rgba(253,246,236,0.6);
+  }
+  .submit-bar .progress-text span {
+    color: var(--paper);
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .btn-check {
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+  }
+  .btn-check:hover { background: #a93226; }
+  .btn-reset {
+    background: transparent;
+    color: rgba(253,246,236,0.5);
+    border: 1px solid rgba(253,246,236,0.2);
+    padding: 10px 18px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-reset:hover { color: var(--paper); border-color: var(--paper); }
+
+  /* ── SCORE OVERLAY ── */
+  #score-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,20,16,0.85);
+    z-index: 100;
+    align-items: center;
+    justify-content: center;
+  }
+  #score-overlay.show { display: flex; }
+  .score-box {
+    background: var(--paper);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 48px 56px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .score-box .label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .score-box .big {
+    font-size: 72px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .score-box .total {
+    font-family: 'Noto Sans JP', sans-serif;
+    color: #8b6340;
+    font-size: 14px;
+    margin-top: 6px;
+  }
+  .score-box .grade {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--red);
+  }
+  .score-box .btn-close {
+    margin-top: 28px;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    padding: 12px 32px;
+    border-radius: 4px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 600px) {
+    header, .identity, .instructions, .section-title, .quiz { padding-left: 18px; padding-right: 18px; }
+    .quiz { grid-template-columns: 1fr; }
+    .submit-bar { padding: 14px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Latihan Bahasa Jepang &nbsp;·&nbsp; A2 / N4</div>
+  <h1>Bagian 3: Komunikasi Interpersonal<br>& Respon Cepat</h1>
+  <p>Aisatsu (挨拶) · Aizuchi (相槌) · Ungkapan Perasaan</p>
+</header>
+
+<div class="identity">
+  <div class="identity-field">
+    <label>名前（なまえ）:</label>
+    <input type="text" placeholder="Nama lengkap">
+  </div>
+  <div class="identity-field">
+    <label>日付（ひづけ）:</label>
+    <input type="text" placeholder="Tanggal">
+  </div>
+</div>
+
+<div class="instructions">
+  <h2>Petunjuk Pengerjaan</h2>
+  <p>Pilihlah respon yang paling alami dan tepat untuk melengkapi dialog pendek di bawah ini. Fokus pada penggunaan <strong>Aisatsu</strong> (salam), <strong>Aizuchi</strong> (respon pendengar), dan ungkapan perasaan yang sesuai dengan konteks budaya Jepang.</p>
+</div>
+
+<div class="section-title">Soal 1 – 10</div>
+<div class="quiz" id="quiz"></div>
+
+<div class="section-title" style="margin-top:24px;">Soal 11 – 20</div>
+<div class="quiz" id="quiz2"></div>
+
+<div class="section-title" style="margin-top:24px;">Soal 21 – 30</div>
+<div class="quiz" id="quiz3"></div>
+
+<div class="submit-bar">
+  <div class="progress-text">Dijawab: <span id="answered-count">0</span> / 30</div>
+  <div style="display:flex;gap:10px;">
+    <button class="btn-reset" onclick="resetAll()">Reset</button>
+    <button class="btn-check" onclick="checkAll()">Koreksi Jawaban ✓</button>
+  </div>
+</div>
+
+<div id="score-overlay">
+  <div class="score-box">
+    <div class="label">Hasil Akhir</div>
+    <div class="big" id="score-num">0</div>
+    <div class="total" id="score-total">dari 30 soal benar</div>
+    <div class="grade" id="score-grade"></div>
+    <button class="btn-close" onclick="document.getElementById('score-overlay').classList.remove('show')">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ── QUESTION DATA ──────────────────────────────────────────────
+// Each option: [label, html-text]
+// correct: 0-based index of correct answer
+const questions = [
+  {
+    a: "昨日(<rt>きのう</rt>)は誕生日(<rt>たんじょうび</rt>)おめでとうございました。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "失礼(<rt>しつれい</rt>)します",
+      "ありがとうございます",
+      "おかげさまで",
+      "お大事(<rt>だいじ</rt>)に"
+    ],
+    correct: 1
+  },
+  {
+    a: "来週(<rt>らいしゅう</rt>)、みんなでバーベキューをしませんか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "いいですね。ぜひ。行(<rt>い</rt>)きたいです。",
+      "それは大変(<rt>たいへん</rt>)ですね。",
+      "おめでとうございます。",
+      "ごめんなさい、行(<rt>い</rt>)きません。"
+    ],
+    correct: 0
+  },
+  {
+    a: "試験(<rt>しけん</rt>)に合格(<rt>ごうかく</rt>)しました！",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "お大事(<rt>だいじ</rt>)に。",
+      "よかったですね。おめでとうございます！",
+      "お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)でした。",
+      "いってらっしゃい。"
+    ],
+    correct: 1
+  },
+  {
+    a: "すみません、ちょっと手伝(<rt>てつだ</rt>)っていただけませんか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "はい、いいですよ。どうしましたか。",
+      "どういたしまして。",
+      "お願(<rt>ねが</rt>)いします。",
+      "おかげさまで。"
+    ],
+    correct: 0
+  },
+  {
+    a: "最近(<rt>さいきん</rt>)、仕事(<rt>しごと</rt>)がとても忙(<rt>いそが</rt>)しくて疲(<rt>つか</rt>)れました。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "それはいけませんね。ゆっくり休(<rt>やす</rt>)んでください。",
+      "おめでとうございます。",
+      "はじめまして。",
+      "ごちそうさまでした。"
+    ],
+    correct: 0
+  },
+  {
+    a: "田中(<rt>たなか</rt>)さん、今日(<rt>きょう</rt>)はありがとうございました。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "お大事(<rt>だいじ</rt>)に。",
+      "こちらこそ、ありがとうございました。",
+      "かしこまりました。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 1
+  },
+  {
+    a: "日本(<rt>にほん</rt>)の生活(<rt>せいかつ</rt>)にはもう慣(<rt>な</rt>)れましたか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "はい、おかげさまで。楽(<rt>たの</rt>)しいです。",
+      "いいえ、いたしません。",
+      "はい、そうです。",
+      "お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)です。"
+    ],
+    correct: 0
+  },
+  {
+    a: "風邪(<rt>かぜ</rt>)をひいてしまったので、今日(<rt>きょう</rt>)は早(<rt>はや</rt>)く帰(<rt>かえ</rt>)ります。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "お大事(<rt>だいじ</rt>)に。",
+      "おめでとうございます。",
+      "いってらっしゃい。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "このお菓子(<rt>かし</rt>)、どうぞ。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "いただきます。",
+      "ごちそうさまでした。",
+      "おかげさまで。",
+      "いってきます。"
+    ],
+    correct: 0
+  },
+  {
+    a: "明日(<rt>あした</rt>)のパーティー、行(<rt>い</rt>)けなくなってしまいました。すみません。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "それは残念(<rt>ざんねん</rt>)ですね。また今度(<rt>こんど</rt>)お願(<rt>ねが</rt>)いします。",
+      "おめでとうございます。",
+      "どういたしまして。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "道(<rt>みち</rt>)がわからなくて困(<rt>こま</rt>)っています。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "よかったですね。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "もしよかったら、一緒(<rt>いっしょ</rt>)に行(<rt>い</rt>)きましょうか。",
+      "お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)でした。"
+    ],
+    correct: 2
+  },
+  {
+    a: "昨日(<rt>きのう</rt>)、新(<rt>あたら</rt>)しいスマホを買(<rt>か</rt>)ったんです。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "へえ、いいですね！どんなスマホですか。",
+      "ごめんなさい。",
+      "おかげさまで。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "雨(<rt>あめ</rt>)が降(<rt>ふ</rt>)ってきましたよ。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "あ、本当(<rt>ほんとう</rt>)ですね。傘(<rt>かさ</rt>)を貸(<rt>か</rt>)しましょうか。",
+      "おめでとうございます。",
+      "いただきます。",
+      "ごちそうさまでした。"
+    ],
+    correct: 0
+  },
+  {
+    a: "田中(<rt>たなか</rt>)さん、お先(<rt>さき</rt>)に失礼(<rt>しつれい</rt>)します。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)でした。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "いってらっしゃい。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "料理(<rt>りょうり</rt>)、お口(<rt>くち</rt>)に合(<rt>あ</rt>)いますか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "はい、とてもおいしいです。",
+      "はい、そうです。",
+      "いいえ、いたしません。",
+      "おかげさまで。"
+    ],
+    correct: 0
+  },
+  {
+    a: "遅(<rt>おそ</rt>)くなってすみません！",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "いいえ、大丈夫(<rt>だいじょうぶ</rt>)ですよ。さあ、始(<rt>はじ</rt>)めましょう。",
+      "どういたしまして。",
+      "おめでとうございます。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "来週(<rt>らいしゅう</rt>)から国(<rt>くに</rt>)へ帰(<rt>かえ</rt>)ります。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "そうですか。気(<rt>き</rt>)をつけて帰(<rt>かえ</rt>)ってくださいね。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)でした。",
+      "いってらっしゃい。"
+    ],
+    correct: 0
+  },
+  {
+    a: "コーヒー、もう一杯(<rt>いっぱい</rt>)いかがですか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "いいえ、もう結構(<rt>けっこう</rt>)です。ごちそうさまでした。",
+      "はい、そうです。",
+      "いただきます。",
+      "おかげさまで。"
+    ],
+    correct: 0
+  },
+  {
+    a: "今日(<rt>きょう</rt>)はいいお天気(<rt>てんき</rt>)ですね。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "そうですね。どこかへ出(<rt>で</rt>)かけたくなりますね。",
+      "おめでとうございます。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "宿題(<rt>しゅくだい</rt>)、忘(<rt>わす</rt>)れてしまいました。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "それはいけませんね。明日(<rt>あした</rt>)は必(<rt>かなら</rt>)ず持(<rt>も</rt>)ってきてください。",
+      "おめでとうございます。",
+      "どういたしまして。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "昨日(<rt>きのう</rt>)のサッカーの試合(<rt>しあい</rt>)、負(<rt>ま</rt>)けてしまいました。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "それは残念(<rt>ざんねん</rt>)でしたね。また次(<rt>つぎ</rt>)、頑張(<rt>がんば</rt>)りましょう。",
+      "おめでとうございます。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "日本(<rt>にほん</rt>)の歌(<rt>うた</rt>)がお上手(<rt>じょうず</rt>)ですね！",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "いいえ、まだまだです。",
+      "はい、そうです。",
+      "おめでとうございます。",
+      "おかげさまで。"
+    ],
+    correct: 0
+  },
+  {
+    a: "失礼(<rt>しつれい</rt>)ですが、お名前(<rt>なまえ</rt>)をもう一度(<rt>いちど</rt>)お願(<rt>ねが</rt>)いします。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "はい、アリと申(<rt>もう</rt>)します。",
+      "どういたしまして。",
+      "お待(<rt>ま</rt>)たせしました。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "明日(<rt>あした</rt>)の会議(<rt>かいぎ</rt>)、10時(<rt>じ</rt>)からですよね。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "ええ、そうです。お間違(<rt>まちが</rt>)えなく。",
+      "いいえ、いたしません。",
+      "おめでとうございます。",
+      "お大事(<rt>だいじ</rt>)に。"
+    ],
+    correct: 0
+  },
+  {
+    a: "この本(<rt>ほん</rt>)、借(<rt>か</rt>)りてもいいですか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "ええ、いいですよ。どうぞ。",
+      "いただきます。",
+      "ごちそうさまでした。",
+      "おかげさまで。"
+    ],
+    correct: 0
+  },
+  {
+    a: "最近(<rt>さいきん</rt>)、どうですか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "ええ、おかげさまで元気(<rt>げんき</rt>)です。",
+      "はじめまして。",
+      "お待(<rt>ま</rt>)たせしました。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "田中(<rt>たなか</rt>)さん、お電話(<rt>でんわ</rt>)ですよ。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "あ、はい。今(<rt>いま</rt>)、代(<rt>か</rt>)わります。",
+      "おめでとうございます。",
+      "どういたしまして。",
+      "お大事(<rt>だいじ</rt>)に。"
+    ],
+    correct: 0
+  },
+  {
+    a: "プレゼン、お疲(<rt>つか</rt>)れ様(<rt>さま</rt>)でした。とてもよかったです。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "ありがとうございます。そう言(<rt>い</rt>)っていただけると嬉(<rt>うれ</rt>)しいです。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "いってらっしゃい。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "今度(<rt>こんど</rt>)の日曜日(<rt>にちようび</rt>)、暇(<rt>ひま</rt>)ですか。",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "ええ、特(<rt>とく</rt>)に予定(<rt>よてい</rt>)はありませんが、どうしてですか。",
+      "はい、そうです。",
+      "おめでとうございます。",
+      "お待(<rt>ま</rt>)たせしました。"
+    ],
+    correct: 0
+  },
+  {
+    a: "ずっと欲(<rt>ほ</rt>)しかったカメラを買(<rt>か</rt>)ったんです！",
+    blank: "B: ＿＿＿＿",
+    options: [
+      "よかったですね！嬉(<rt>うれ</rt>)しそうですね。",
+      "ごめんなさい。",
+      "お大事(<rt>だいじ</rt>)に。",
+      "かしこまりました。"
+    ],
+    correct: 0
+  }
+];
+
+const optionLabels = ['A', 'B', 'C', 'D'];
+let userAnswers = new Array(30).fill(null);
+
+// ── RENDER RUBY ──────────────────────────────────────────────
+// Converts "漢字(<rt>かな</rt>)" into proper <ruby> markup
+function parseRuby(str) {
+  return str.replace(/([^\s(（<]+)\(<rt>([^<]+)<\/rt>\)/g, (_, kanji, reading) => {
+    return `<ruby>${kanji}<rt>${reading}</rt></ruby>`;
+  });
+}
+
+// ── BUILD CARDS ───────────────────────────────────────────────
+function buildCard(q, index) {
+  const num = index + 1;
+  const optHTML = q.options.map((opt, i) => `
+    <label class="option-label" id="opt-${num}-${i}" onclick="selectAnswer(${num-1}, ${i})">
+      <input type="radio" name="q${num}" value="${i}">
+      <span class="option-badge">${optionLabels[i]}</span>
+      <span>${parseRuby(opt)}</span>
+    </label>
+  `).join('');
+
+  return `
+    <div class="question-card" id="card-${num}">
+      <div class="card-header">
+        <div class="q-number">${num}</div>
+        <div class="dialog">
+          <div><span class="speaker">A: </span>${parseRuby(q.a)}</div>
+          <div><span class="speaker">B: </span><span style="letter-spacing:2px;color:#b0906a;">＿＿＿＿</span></div>
+        </div>
+      </div>
+      <div class="options">${optHTML}</div>
+      <div class="feedback" id="fb-${num}"></div>
+    </div>
+  `;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const grid1 = document.getElementById('quiz');
+  const grid2 = document.getElementById('quiz2');
+  const grid3 = document.getElementById('quiz3');
+
+  questions.slice(0, 10).forEach((q, i) => grid1.innerHTML += buildCard(q, i));
+  questions.slice(10, 20).forEach((q, i) => grid2.innerHTML += buildCard(q, i + 10));
+  questions.slice(20, 30).forEach((q, i) => grid3.innerHTML += buildCard(q, i + 20));
+});
+
+function selectAnswer(qIndex, optIndex) {
+  userAnswers[qIndex] = optIndex;
+  const num = qIndex + 1;
+  // clear previous selection
+  for (let i = 0; i < 4; i++) {
+    const lbl = document.getElementById(`opt-${num}-${i}`);
+    if (lbl) lbl.classList.remove('selected');
+  }
+  const sel = document.getElementById(`opt-${num}-${optIndex}`);
+  if (sel) sel.classList.add('selected');
+  updateCount();
+}
+
+function updateCount() {
+  const answered = userAnswers.filter(a => a !== null).length;
+  document.getElementById('answered-count').textContent = answered;
+}
+
+function checkAll() {
+  let score = 0;
+  questions.forEach((q, i) => {
+    const num = i + 1;
+    const chosen = userAnswers[i];
+    const card = document.getElementById(`card-${num}`);
+    const fb = document.getElementById(`fb-${num}`);
+
+    // reset all option labels
+    for (let j = 0; j < 4; j++) {
+      const lbl = document.getElementById(`opt-${num}-${j}`);
+      if (lbl) lbl.classList.remove('selected', 'correct', 'wrong');
+    }
+
+    // always mark correct answer
+    const correctLbl = document.getElementById(`opt-${num}-${q.correct}`);
+    if (correctLbl) correctLbl.classList.add('correct');
+
+    card.classList.remove('answered-correct', 'answered-wrong');
+    fb.classList.remove('show', 'correct', 'wrong');
+
+    if (chosen === null) {
+      fb.textContent = '⚠ Belum dijawab. Jawaban yang benar: ' + optionLabels[q.correct];
+      fb.classList.add('show', 'wrong');
+      card.classList.add('answered-wrong');
+    } else if (chosen === q.correct) {
+      score++;
+      const chosenLbl = document.getElementById(`opt-${num}-${chosen}`);
+      if (chosenLbl) chosenLbl.classList.add('correct');
+      fb.textContent = '✓ Benar!';
+      fb.classList.add('show', 'correct');
+      card.classList.add('answered-correct');
+    } else {
+      const chosenLbl = document.getElementById(`opt-${num}-${chosen}`);
+      if (chosenLbl) chosenLbl.classList.add('wrong');
+      fb.textContent = '✗ Kurang tepat. Jawaban yang benar: ' + optionLabels[q.correct];
+      fb.classList.add('show', 'wrong');
+      card.classList.add('answered-wrong');
+    }
+  });
+
+  // show score overlay
+  const pct = Math.round((score / 30) * 100);
+  document.getElementById('score-num').textContent = score;
+  document.getElementById('score-total').textContent = `dari 30 soal benar (${pct}%)`;
+  let grade = '';
+  if (pct >= 90) grade = '優秀 (Sangat Baik) ⭐⭐⭐';
+  else if (pct >= 70) grade = '良好 (Baik) ⭐⭐';
+  else if (pct >= 50) grade = '合格 (Cukup) ⭐';
+  else grade = 'もっと練習しましょう！';
+  document.getElementById('score-grade').textContent = grade;
+  document.getElementById('score-overlay').classList.add('show');
+}
+
+function resetAll() {
+  userAnswers = new Array(30).fill(null);
+  questions.forEach((q, i) => {
+    const num = i + 1;
+    const card = document.getElementById(`card-${num}`);
+    const fb = document.getElementById(`fb-${num}`);
+    card.classList.remove('answered-correct', 'answered-wrong');
+    fb.classList.remove('show', 'correct', 'wrong');
+    fb.textContent = '';
+    for (let j = 0; j < 4; j++) {
+      const lbl = document.getElementById(`opt-${num}-${j}`);
+      if (lbl) lbl.classList.remove('selected', 'correct', 'wrong');
+    }
+  });
+  updateCount();
+}
+</script>
+</body>
+</html>
